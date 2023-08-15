@@ -1,20 +1,32 @@
+// Header.js
+
 import React, { useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import Order from "./Order";
 
 const showOrders = (props) => {
-  let summa = 0
-  props.orders.forEach(el => summa += Number.parseFloat(el.price));
+  let totalSum = 0;
+
+  props.orders.forEach((order) => {
+    totalSum += order.price * order.quantity;
+  });
+
   return (
     <div>
-      {" "}
       {props.orders.map((el) => (
-        <Order onDelete={props.onDelete} key={el.id} item={el} />
+        <Order
+          key={el.id}
+          item={el}
+          onDelete={props.onDelete}
+          onIncreaseQuantity={props.onIncreaseQuantity}
+          onDecreaseQuantity={props.onDecreaseQuantity}
+        />
       ))}
-      <p className="summa">Сумма: {new Intl.NumberFormat().format(summa)}$</p>
+      <p className="summa">Сумма: {new Intl.NumberFormat().format(totalSum)}$</p>
     </div>
   );
 };
+
 const showNothing = () => {
   return (
     <div className="empty">
@@ -22,6 +34,7 @@ const showNothing = () => {
     </div>
   );
 };
+
 export default function Header(props) {
   let [cartOpen, setCartOpen] = useState(false);
 
